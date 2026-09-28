@@ -1,0 +1,311 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ comic.title or "Comic Preview" }} - ComicCraft AI
+{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+
+<div class="container">
+
+    <h1>
+        Your <span>Comic</span> Is Ready!
+    </h1>
+
+    <p>
+        Preview your AI-generated comic panels below.
+    </p>
+
+</div>
+
+</section>
+
+<div class="container">
+
+<!-- =================================================
+     ERROR MESSAGE
+     ================================================= -->
+
+{% if error %}
+
+    <div class="alert alert-error">
+        {{ error }}
+    </div>
+
+{% endif %}
+
+
+<!-- =================================================
+     COMIC INFORMATION
+     ================================================= -->
+
+<div class="card">
+
+    <h2 class="section-title">
+        {{ comic.title or "My AI Comic" }}
+    </h2>
+
+    {% if comic.logline %}
+
+        <p class="section-subtitle">
+            <strong>Story idea:</strong>
+            {{ comic.logline }}
+        </p>
+
+    {% endif %}
+
+    <div class="button-row">
+
+        <a
+            href="/"
+            class="btn btn-light"
+        >
+            ← Create Another Comic
+        </a>
+
+        <a
+            href="/export"
+            class="btn btn-primary"
+        >
+            Export as PDF
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- =================================================
+     COMIC PANELS
+     ================================================= -->
+
+{% if comic.panels %}
+
+    <section>
+
+        <h2 class="section-title">
+            Comic Panels
+        </h2>
+
+        <p class="section-subtitle">
+            Your generated story, artwork, narration,
+            captions and dialogue are shown below.
+        </p>
+
+
+        <div class="comic-grid">
+
+            {% for panel in comic.panels %}
+
+                <article class="comic-panel">
+
+                    <!-- =================================
+                         PANEL IMAGE
+                         ================================= -->
+
+                    <div class="panel-image-wrapper">
+
+                        {% if panel.image_url %}
+
+                            <img
+                                src="{{ panel.image_url }}"
+                                alt="Comic panel {{ panel.panel_number }}"
+                                class="panel-image"
+                                loading="lazy"
+                            >
+
+                        {% else %}
+
+                            <div
+                                style="
+                                    aspect-ratio: 1 / 1;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    background: #e5e7eb;
+                                    color: #6b7280;
+                                    font-weight: 700;
+                                "
+                            >
+                                Image unavailable
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- =================================
+                         PANEL CONTENT
+                         ================================= -->
+
+                    <div class="panel-content">
+
+                        <!-- PANEL NUMBER -->
+
+                        <div class="panel-number">
+
+                            Panel
+                            {{ panel.panel_number }}
+
+                        </div>
+
+
+                        <!-- PANEL TITLE -->
+
+                        <h3 class="panel-title">
+
+                            {{ panel.title }}
+
+                        </h3>
+
+
+                        <!-- CAPTION -->
+
+                        {% if panel.caption %}
+
+                            <div class="caption">
+
+                                {{ panel.caption }}
+
+                            </div>
+
+                        {% endif %}
+
+
+                        <!-- SCENE DESCRIPTION -->
+
+                        {% if panel.scene %}
+
+                            <p class="panel-text">
+
+                                <strong>
+                                    Scene:
+                                </strong>
+
+                                {{ panel.scene }}
+
+                            </p>
+
+                        {% endif %}
+
+
+                        <!-- NARRATION -->
+
+                        {% if panel.narration %}
+
+                            <div class="narration">
+
+                                <strong>
+                                    Narration:
+                                </strong>
+
+                                <br>
+
+                                {{ panel.narration }}
+
+                            </div>
+
+                        {% endif %}
+
+
+                        <!-- DIALOGUE -->
+
+                        {% if panel.dialogue %}
+
+                            <div class="dialogue">
+
+                                {{ panel.dialogue }}
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </article>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         EXPORT SECTION
+         ================================================= -->
+
+    <section class="export-section">
+
+        <div class="card">
+
+            <h2>
+                Your Comic Is Complete
+            </h2>
+
+            <p>
+                Save your complete comic as a PDF
+                or create another comic.
+            </p>
+
+            <div class="button-row"
+                 style="justify-content: center;">
+
+                <a
+                    href="/export"
+                    class="btn btn-primary"
+                >
+                    📄 Export PDF
+                </a>
+
+                <a
+                    href="/"
+                    class="btn btn-secondary"
+                >
+                    ✨ Create New Comic
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+{% else %}
+
+    <!-- =================================================
+         EMPTY STATE
+         ================================================= -->
+
+    <div class="empty-state">
+
+        <h2>
+            No comic panels found
+        </h2>
+
+        <p>
+            Please generate a comic first.
+        </p>
+
+        <div class="button-row"
+             style="justify-content: center;">
+
+            <a
+                href="/"
+                class="btn btn-primary"
+            >
+                Create Comic
+            </a>
+
+        </div>
+
+    </div>
+
+{% endif %}
+
+</div>
+
+{% endblock %}

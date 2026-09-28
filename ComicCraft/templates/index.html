@@ -1,0 +1,559 @@
+{% extends "base.html" %}
+
+{% block title %}
+ComicCraft AI - Create Your Comic
+{% endblock %}
+
+{% block content %}
+
+<!-- =====================================================
+     HERO SECTION
+     ===================================================== -->
+
+<section class="hero">
+
+```
+<div class="container">
+
+    <h1>
+        Create Your Own
+        <span>AI Comic</span>
+    </h1>
+
+    <p>
+        Turn your story idea into a complete comic
+        with AI-generated story panels, dialogue,
+        narration and artwork.
+    </p>
+
+</div>
+```
+
+</section>
+
+<!-- =====================================================
+     CREATE COMIC SECTION
+     ===================================================== -->
+
+<div
+    class="container"
+    id="create"
+>
+
+```
+<!-- =================================================
+     ERROR MESSAGE
+     ================================================= -->
+
+{% if error %}
+
+    <div class="alert alert-error">
+
+        {{ error }}
+
+    </div>
+
+{% endif %}
+
+
+<!-- =================================================
+     CREATE FORM
+     ================================================= -->
+
+<div class="card">
+
+    <h2 class="section-title">
+        Create Your Comic
+    </h2>
+
+    <p class="section-subtitle">
+        Enter your story details below and
+        ComicCraft AI will create your comic.
+    </p>
+
+
+    <form
+        action="/generate"
+        method="POST"
+    >
+
+        <div class="form-grid">
+
+
+            <!-- =========================================
+                 COMIC TITLE
+                 ========================================= -->
+
+            <div class="form-group">
+
+                <label for="title">
+                    Comic Title
+                </label>
+
+                <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    placeholder="My Amazing Adventure"
+                    value="{{ comic.title if comic else '' }}"
+                    required
+                >
+
+            </div>
+
+
+            <!-- =========================================
+                 NUMBER OF PANELS
+                 ========================================= -->
+
+            <div class="form-group">
+
+                <label for="panels">
+                    Number of Panels
+                </label>
+
+                <select
+                    id="panels"
+                    name="panels"
+                >
+
+                    <option value="3">
+                        3 Panels
+                    </option>
+
+                    <option
+                        value="4"
+                    >
+                        4 Panels
+                    </option>
+
+                    <option
+                        value="5"
+                        selected
+                    >
+                        5 Panels
+                    </option>
+
+                    <option
+                        value="6"
+                    >
+                        6 Panels
+                    </option>
+
+                    <option
+                        value="8"
+                    >
+                        8 Panels
+                    </option>
+
+                    <option
+                        value="10"
+                    >
+                        10 Panels
+                    </option>
+
+                    <option
+                        value="12"
+                    >
+                        12 Panels
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- =========================================
+                 STORY IDEA
+                 ========================================= -->
+
+            <div class="form-group full">
+
+                <label for="prompt">
+                    Story Idea
+                </label>
+
+                <textarea
+                    id="prompt"
+                    name="prompt"
+                    placeholder="Example: A young student discovers a mysterious robot in her college and goes on an unexpected adventure..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <!-- =========================================
+                 MAIN CHARACTER
+                 ========================================= -->
+
+            <div class="form-group">
+
+                <label for="character">
+                    Main Character
+                </label>
+
+                <input
+                    type="text"
+                    id="character"
+                    name="character"
+                    placeholder="A young student named Maya"
+                    value="A young adventurer"
+                    required
+                >
+
+            </div>
+
+
+            <!-- =========================================
+                 SETTING
+                 ========================================= -->
+
+            <div class="form-group">
+
+                <label for="setting">
+                    Setting
+                </label>
+
+                <input
+                    type="text"
+                    id="setting"
+                    name="setting"
+                    placeholder="A futuristic college campus"
+                    value="A mysterious fantasy village"
+                    required
+                >
+
+            </div>
+
+
+            <!-- =========================================
+                 TONE
+                 ========================================= -->
+
+            <div class="form-group">
+
+                <label for="tone">
+                    Story Tone
+                </label>
+
+                <select
+                    id="tone"
+                    name="tone"
+                >
+
+                    <option value="Adventurous">
+                        Adventurous
+                    </option>
+
+                    <option value="Funny">
+                        Funny
+                    </option>
+
+                    <option value="Mysterious">
+                        Mysterious
+                    </option>
+
+                    <option value="Emotional">
+                        Emotional
+                    </option>
+
+                    <option value="Fantasy">
+                        Fantasy
+                    </option>
+
+                    <option value="Sci-Fi">
+                        Sci-Fi
+                    </option>
+
+                    <option value="Action">
+                        Action
+                    </option>
+
+                    <option value="Inspirational">
+                        Inspirational
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- =========================================
+                 ART STYLE
+                 ========================================= -->
+
+            <div class="form-group">
+
+                <label for="art_style">
+                    Art Style
+                </label>
+
+                <select
+                    id="art_style"
+                    name="art_style"
+                >
+
+                    <option value="Cinematic comic book">
+                        Cinematic Comic Book
+                    </option>
+
+                    <option value="Manga">
+                        Manga
+                    </option>
+
+                    <option value="Anime">
+                        Anime
+                    </option>
+
+                    <option value="Cartoon">
+                        Cartoon
+                    </option>
+
+                    <option value="Digital painting">
+                        Digital Painting
+                    </option>
+
+                    <option value="Fantasy illustration">
+                        Fantasy Illustration
+                    </option>
+
+                    <option value="Graphic novel">
+                        Graphic Novel
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             FORM BUTTON
+             ================================================= -->
+
+        <div class="button-row">
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+            >
+                ✨ Generate My Comic
+            </button>
+
+            <button
+                type="reset"
+                class="btn btn-light"
+            >
+                Clear
+            </button>
+
+        </div>
+
+    </form>
+
+
+    <!-- =================================================
+         LOADING MESSAGE
+         ================================================= -->
+
+    <div
+        id="loading"
+        class="loading"
+    >
+
+        <div class="spinner"></div>
+
+        <p>
+            Creating your comic...
+        </p>
+
+        <p>
+            Gemini is writing the story and
+            generating your comic panels.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- =================================================
+     HOW IT WORKS
+     ================================================= -->
+
+<div class="card">
+
+    <h2 class="section-title">
+        How ComicCraft Works
+    </h2>
+
+    <p class="section-subtitle">
+        Your story goes through several AI-powered
+        steps before becoming a comic.
+    </p>
+
+
+    <div class="comic-grid">
+
+        <div class="comic-panel">
+
+            <div class="panel-content">
+
+                <div class="panel-number">
+                    1
+                </div>
+
+                <h3 class="panel-title">
+                    Story Planning
+                </h3>
+
+                <p class="panel-text">
+                    Gemini creates a structured
+                    panel-by-panel outline from
+                    your story idea.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="comic-panel">
+
+            <div class="panel-content">
+
+                <div class="panel-number">
+                    2
+                </div>
+
+                <h3 class="panel-title">
+                    Story Generation
+                </h3>
+
+                <p class="panel-text">
+                    The outline is expanded into
+                    narration, captions and
+                    character dialogue.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="comic-panel">
+
+            <div class="panel-content">
+
+                <div class="panel-number">
+                    3
+                </div>
+
+                <h3 class="panel-title">
+                    AI Artwork
+                </h3>
+
+                <p class="panel-text">
+                    Each panel receives a detailed
+                    visual prompt for AI image
+                    generation.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="comic-panel">
+
+            <div class="panel-content">
+
+                <div class="panel-number">
+                    4
+                </div>
+
+                <h3 class="panel-title">
+                    Final Comic
+                </h3>
+
+                <p class="panel-text">
+                    All generated content is combined
+                    into a complete comic that can
+                    be exported as a PDF.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+
+<script>
+
+    /*
+     * Show loading message when the comic
+     * generation form is submitted.
+     */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            const form =
+                document.querySelector(
+                    'form[action="/generate"]'
+                );
+
+            const loading =
+                document.getElementById(
+                    "loading"
+                );
+
+
+            if (!form || !loading) {
+                return;
+            }
+
+
+            form.addEventListener(
+                "submit",
+                function () {
+
+                    loading.classList.add(
+                        "active"
+                    );
+
+                    const button =
+                        form.querySelector(
+                            'button[type="submit"]'
+                        );
+
+                    if (button) {
+
+                        button.disabled = true;
+
+                        button.textContent =
+                            "Creating Comic...";
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+</script>
+
+{% endblock %}

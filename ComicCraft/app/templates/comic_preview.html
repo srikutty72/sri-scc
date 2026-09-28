@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ comic.title }} - ComicCraft AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0b0712;
+            color: white;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1100px;
+            margin: auto;
+            padding: 40px 0;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .header h1 {
+            font-size: 46px;
+            margin-bottom: 12px;
+        }
+
+        .header p {
+            color: #c8c0d0;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .info {
+            background: #17111f;
+            border: 1px solid #34283f;
+            border-radius: 18px;
+            padding: 22px;
+            margin-bottom: 35px;
+        }
+
+        .info p {
+            margin: 8px 0;
+            color: #ddd;
+        }
+
+        .panel {
+            background: #15101c;
+            border: 1px solid #33263d;
+            border-radius: 22px;
+            padding: 25px;
+            margin-bottom: 35px;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.35);
+        }
+
+        .panel-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        .panel-title {
+            font-size: 28px;
+            margin: 0;
+        }
+
+        .panel-number {
+            background: #7c3aed;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .comic-image {
+            display: block;
+            width: 100%;
+            max-width: 850px;
+            margin: 0 auto 25px;
+            border-radius: 16px;
+            border: 1px solid #44364f;
+        }
+
+        .no-image {
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #211a28;
+            border-radius: 16px;
+            color: #aaa;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .section {
+            margin-top: 18px;
+            padding: 16px;
+            border-radius: 12px;
+            line-height: 1.7;
+        }
+
+        .scene {
+            background: #1c1623;
+            color: #ddd;
+        }
+
+        .narration {
+            background: #21192b;
+            border-left: 4px solid #8b5cf6;
+        }
+
+        .dialogue {
+            background: #281722;
+            border-left: 4px solid #ec4899;
+        }
+
+        .error {
+            margin-top: 15px;
+            padding: 14px;
+            background: #351818;
+            color: #ff9b9b;
+            border-radius: 10px;
+        }
+
+        .buttons {
+            text-align: center;
+            margin: 50px 0;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 15px 28px;
+            margin: 8px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            background: linear-gradient(90deg, #7c3aed, #ec4899);
+        }
+
+        .button.secondary {
+            background: #28212f;
+            border: 1px solid #4b3c56;
+        }
+
+        @media (max-width: 700px) {
+            .header h1 {
+                font-size: 34px;
+            }
+
+            .panel-top {
+                display: block;
+            }
+
+            .panel-number {
+                display: inline-block;
+                margin-top: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>📖 {{ comic.title }}</h1>
+
+        {% if comic.logline %}
+        <p>{{ comic.logline }}</p>
+        {% endif %}
+    </div>
+
+
+    <div class="info">
+
+        {% if comic.character %}
+        <p>
+            <strong>👤 Character:</strong>
+            {{ comic.character }}
+        </p>
+        {% endif %}
+
+        {% if comic.setting %}
+        <p>
+            <strong>🌍 Setting:</strong>
+            {{ comic.setting }}
+        </p>
+        {% endif %}
+
+        {% if comic.tone %}
+        <p>
+            <strong>🎭 Tone:</strong>
+            {{ comic.tone }}
+        </p>
+        {% endif %}
+
+        {% if comic.style %}
+        <p>
+            <strong>🎨 Art Style:</strong>
+            {{ comic.style }}
+        </p>
+        {% endif %}
+
+    </div>
+
+
+    {% for panel in comic.panels %}
+
+    <div class="panel">
+
+        <div class="panel-top">
+
+            <h2 class="panel-title">
+                {{ panel.title }}
+            </h2>
+
+            <div class="panel-number">
+                Panel {{ panel.panel_number }}
+            </div>
+
+        </div>
+
+
+        {% if panel.image_url %}
+
+            <img
+                class="comic-image"
+                src="{{ panel.image_url }}"
+                alt="Comic Panel {{ panel.panel_number }}"
+            >
+
+        {% else %}
+
+            <div class="no-image">
+                🖼️ Comic image could not be displayed
+            </div>
+
+        {% endif %}
+
+
+        {% if panel.scene %}
+        <div class="section scene">
+            <strong>🎬 Scene</strong><br>
+            {{ panel.scene }}
+        </div>
+        {% endif %}
+
+
+        {% if panel.narration %}
+        <div class="section narration">
+            <strong>📖 Narration</strong><br>
+            {{ panel.narration }}
+        </div>
+        {% endif %}
+
+
+        {% if panel.dialogue %}
+        <div class="section dialogue">
+            <strong>💬 Dialogue</strong><br>
+            {{ panel.dialogue }}
+        </div>
+        {% endif %}
+
+
+        {% if panel.image_error %}
+        <div class="error">
+            Image error: {{ panel.image_error }}
+        </div>
+        {% endif %}
+
+    </div>
+
+    {% endfor %}
+
+
+    <div class="buttons">
+
+        <a href="/" class="button">
+            ✨ Create Another Comic
+        </a>
+
+        <a href="/export" class="button secondary">
+            📄 Export Comic
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>
+

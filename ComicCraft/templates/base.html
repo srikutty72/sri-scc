@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="ComicCraft AI - Create comics using generative AI."
+    >
+
+    <title>
+        {% block title %}
+            ComicCraft AI
+        {% endblock %}
+    </title>
+
+    <!-- =================================================
+         GOOGLE FONT
+         ================================================= -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- =================================================
+         MAIN CSS
+         ================================================= -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', path='css/style.css') }}"
+    >
+
+    {% block extra_css %}
+    {% endblock %}
+
+</head>
+
+
+<body>
+
+    <!-- =================================================
+         HEADER
+         ================================================= -->
+
+    <header class="header">
+
+        <div class="container header-content">
+
+            <!-- LOGO -->
+
+            <a
+                href="/"
+                class="logo"
+            >
+                Comic<span>Craft</span> AI
+            </a>
+
+
+            <!-- NAVIGATION -->
+
+            <nav class="nav">
+
+                <a href="/">
+                    Home
+                </a>
+
+                <a href="/#create">
+                    Create Comic
+                </a>
+
+                {% if comic is defined and comic.layout %}
+                    <a href="/export">
+                        Export
+                    </a>
+                {% endif %}
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    <!-- =================================================
+         MAIN CONTENT
+         ================================================= -->
+
+    <main>
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+
+    <!-- =================================================
+         FOOTER
+         ================================================= -->
+
+    <footer class="footer">
+
+        <div class="container">
+
+            <p>
+                © 2026
+                <strong>ComicCraft AI</strong>.
+                Create stories with Generative AI.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =================================================
+         MAIN JAVASCRIPT
+         ================================================= -->
+
+    <script>
+
+        /*
+         * Disable submit button after form submission.
+         * This prevents accidental double submissions.
+         */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                const forms =
+                    document.querySelectorAll(
+                        "form"
+                    );
+
+                forms.forEach(
+                    function (form) {
+
+                        form.addEventListener(
+                            "submit",
+                            function () {
+
+                                const submitButton =
+                                    form.querySelector(
+                                        'button[type="submit"]'
+                                    );
+
+                                if (
+                                    submitButton
+                                ) {
+
+                                    submitButton.disabled =
+                                        true;
+
+                                    submitButton.dataset
+                                        .originalText =
+                                        submitButton
+                                            .textContent;
+
+                                    submitButton.textContent =
+                                        "Generating...";
+                                }
+
+                            }
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+    </script>
+
+
+    {% block extra_js %}
+    {% endblock %}
+
+</body>
+
+</html>

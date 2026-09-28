@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>{{ app_name }} {{ app_version }}</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: #0f1117;
+        color: #ffffff;
+    }
+
+    .header {
+        padding: 28px 20px;
+        text-align: center;
+        background: #171a23;
+        border-bottom: 1px solid #292e3b;
+    }
+
+    .header h1 {
+        margin: 0;
+        font-size: 34px;
+    }
+
+    .header p {
+        margin: 8px 0 0;
+        color: #aeb6c8;
+    }
+
+    .container {
+        width: min(1100px, 94%);
+        margin: 30px auto;
+    }
+
+    .card {
+        background: #171a23;
+        border: 1px solid #292e3b;
+        border-radius: 18px;
+        padding: 24px;
+        margin-bottom: 24px;
+    }
+
+    .card h2 {
+        margin-top: 0;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+    }
+
+    .field {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .field.full {
+        grid-column: 1 / -1;
+    }
+
+    label {
+        font-weight: bold;
+        color: #dce2ee;
+    }
+
+    input,
+    textarea,
+    select {
+        width: 100%;
+        padding: 13px;
+        border: 1px solid #353c4d;
+        border-radius: 10px;
+        background: #0f1117;
+        color: #ffffff;
+        font-size: 15px;
+        outline: none;
+    }
+
+    textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+        border-color: #7c8cff;
+    }
+
+    .button-area {
+        margin-top: 22px;
+        text-align: center;
+    }
+
+    button {
+        border: none;
+        border-radius: 12px;
+        padding: 15px 32px;
+        font-size: 17px;
+        font-weight: bold;
+        cursor: pointer;
+        background: #6c63ff;
+        color: white;
+    }
+
+    button:hover {
+        opacity: 0.9;
+    }
+
+    button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .status {
+        margin-top: 18px;
+        padding: 14px;
+        border-radius: 10px;
+        background: #202532;
+        color: #cdd5e5;
+        display: none;
+    }
+
+    .error {
+        background: #3a2024;
+        color: #ffb7bd;
+    }
+
+    .success {
+        background: #193327;
+        color: #a9efc7;
+    }
+
+    #result {
+        display: none;
+    }
+
+    .comic-title {
+        font-size: 32px;
+        margin-bottom: 8px;
+    }
+
+    .logline {
+        color: #b9c1d2;
+        line-height: 1.6;
+        margin-bottom: 25px;
+    }
+
+    .story-info {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 28px;
+    }
+
+    .info-box {
+        background: #10131a;
+        padding: 15px;
+        border-radius: 12px;
+        border: 1px solid #292e3b;
+    }
+
+    .info-box strong {
+        display: block;
+        color: #8994aa;
+        font-size: 12px;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+    }
+
+    .info-box span {
+        color: #ffffff;
+    }
+
+    .panels {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .panel {
+        background: #10131a;
+        border: 1px solid #303746;
+        border-radius: 16px;
+        overflow: hidden;
+    }
+
+    .panel-header {
+        padding: 16px 18px;
+        background: #1c202b;
+    }
+
+    .panel-header h3 {
+        margin: 0;
+    }
+
+    .panel-image {
+        width: 100%;
+        display: block;
+        background: #080a0f;
+    }
+
+    .panel-content {
+        padding: 18px;
+    }
+
+    .panel-content h4 {
+        margin-top: 0;
+        font-size: 20px;
+    }
+
+    .panel-content p {
+        line-height: 1.65;
+        color: #c7cedc;
+    }
+
+    .dialogue {
+        margin-top: 15px;
+        padding: 14px;
+        border-left: 4px solid #6c63ff;
+        background: #1b1f2a;
+        border-radius: 8px;
+        color: #ffffff;
+        font-style: italic;
+    }
+
+    .no-image {
+        padding: 35px;
+        text-align: center;
+        color: #ffb7bd;
+        background: #2b1d21;
+    }
+
+    .footer {
+        text-align: center;
+        padding: 30px;
+        color: #717b90;
+    }
+
+    @media (max-width: 750px) {
+        .grid,
+        .story-info {
+            grid-template-columns: 1fr;
+        }
+
+        .field.full {
+            grid-column: auto;
+        }
+
+        .header h1 {
+            font-size: 27px;
+        }
+    }
+</style>
+```
+
+</head>
+
+<body>
+
+<header class="header">
+    <h1>🎨 {{ app_name }}</h1>
+    <p>AI Comic Story & Panel Generator · {{ app_version }}</p>
+</header>
+
+<main class="container">
+
+```
+<!-- INPUT -->
+<section class="card">
+
+    <h2>Create Your Comic</h2>
+
+    <form id="comicForm">
+
+        <div class="grid">
+
+            <div class="field">
+                <label for="title">Comic Title</label>
+                <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    value="The Magic Book"
+                    required
+                >
+            </div>
+
+            <div class="field">
+                <label for="panels">Number of Panels</label>
+                <input
+                    type="number"
+                    id="panels"
+                    name="panels"
+                    value="{{ default_panels }}"
+                    min="{{ min_panels }}"
+                    max="{{ max_panels }}"
+                    required
+                >
+            </div>
+
+            <div class="field">
+                <label for="character">Main Character</label>
+                <input
+                    type="text"
+                    id="character"
+                    name="character"
+                    placeholder="Example: Sri, a young college student"
+                    required
+                >
+            </div>
+
+            <div class="field">
+                <label for="setting">Setting</label>
+                <input
+                    type="text"
+                    id="setting"
+                    name="setting"
+                    placeholder="Example: Ancient magical library"
+                    required
+                >
+            </div>
+
+            <div class="field">
+                <label for="tone">Story Tone</label>
+                <input
+                    type="text"
+                    id="tone"
+                    name="tone"
+                    value="Adventure and mystery"
+                >
+            </div>
+
+            <div class="field">
+                <label for="art_style">Art Style</label>
+                <input
+                    type="text"
+                    id="art_style"
+                    name="art_style"
+                    value="Cinematic comic book"
+                >
+            </div>
+
+            <div class="field full">
+                <label for="story">Story Prompt</label>
+                <textarea
+                    id="story"
+                    name="story"
+                    required
+                >Sri discovers a mysterious glowing book inside an ancient library. When she opens it, a magical portal appears and takes her into a hidden world. She must discover the secret of the book and find her way back home.</textarea>
+            </div>
+
+        </div>
+
+        <div class="button-area">
+            <button type="submit" id="generateBtn">
+                ✨ Generate Comic
+            </button>
+        </div>
+
+    </form>
+
+    <div id="status" class="status"></div>
+
+</section>
+
+
+<!-- RESULT -->
+<section id="result" class="card">
+
+    <div id="comicHeader"></div>
+
+    <div id="panelsContainer" class="panels"></div>
+
+</section>
+```
+
+</main>
+
+<footer class="footer">
+    ComicCraft AI · Story + AI Images
+</footer>
+
+<script>
+
+const form = document.getElementById("comicForm");
+const button = document.getElementById("generateBtn");
+const statusBox = document.getElementById("status");
+const result = document.getElementById("result");
+const comicHeader = document.getElementById("comicHeader");
+const panelsContainer = document.getElementById("panelsContainer");
+
+
+function showStatus(message, type = "") {
+
+    statusBox.style.display = "block";
+
+    statusBox.className = "status " + type;
+
+    statusBox.textContent = message;
+}
+
+
+function escapeHtml(value) {
+
+    if (value === null || value === undefined) {
+        return "";
+    }
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+function renderComic(comic) {
+
+    result.style.display = "block";
+
+    comicHeader.innerHTML = `
+        <div class="comic-title">
+            ${escapeHtml(comic.title)}
+        </div>
+
+        <div class="logline">
+            ${escapeHtml(comic.logline)}
+        </div>
+
+        <div class="story-info">
+
+            <div class="info-box">
+                <strong>Main Character</strong>
+                <span>${escapeHtml(comic.character)}</span>
+            </div>
+
+            <div class="info-box">
+                <strong>Setting</strong>
+                <span>${escapeHtml(comic.setting)}</span>
+            </div>
+
+            <div class="info-box">
+                <strong>Style</strong>
+                <span>${escapeHtml(comic.style)}</span>
+            </div>
+
+        </div>
+    `;
+
+
+    panelsContainer.innerHTML = "";
+
+
+    const panels = comic.panels || [];
+
+
+    panels.forEach((panel) => {
+
+        const panelElement = document.createElement("article");
+
+        panelElement.className = "panel";
+
+
+        let imageHTML = "";
+
+        if (panel.image_url) {
+
+            imageHTML = `
+                <img
+                    class="panel-image"
+                    src="${escapeHtml(panel.image_url)}"
+                    alt="Comic panel ${panel.panel_number}"
+                    loading="lazy"
+                >
+            `;
+
+        } else {
+
+            imageHTML = `
+                <div class="no-image">
+                    Image generation failed.<br>
+                    ${escapeHtml(panel.image_error || "Unknown error")}
+                </div>
+            `;
+
+        }
+
+
+        panelElement.innerHTML = `
+
+            <div class="panel-header">
+                <h3>
+                    Panel ${panel.panel_number} —
+                    ${escapeHtml(panel.title)}
+                </h3>
+            </div>
+
+            ${imageHTML}
+
+            <div class="panel-content">
+
+                <h4>
+                    ${escapeHtml(panel.title)}
+                </h4>
+
+                <p>
+                    <strong>Scene:</strong><br>
+                    ${escapeHtml(panel.scene)}
+                </p>
+
+                <p>
+                    <strong>Narration:</strong><br>
+                    ${escapeHtml(panel.narration)}
+                </p>
+
+                ${
+                    panel.dialogue
+                    ?
+                    `
+                    <div class="dialogue">
+                        💬 ${escapeHtml(panel.dialogue)}
+                    </div>
+                    `
+                    :
+                    ""
+                }
+
+            </div>
+        `;
+
+
+        panelsContainer.appendChild(panelElement);
+
+    });
+
+
+    window.scrollTo({
+        top: result.offsetTop - 20,
+        behavior: "smooth"
+    });
+
+}
+
+
+form.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+
+    button.disabled = true;
+
+    button.textContent = "⏳ Creating Comic...";
+
+
+    result.style.display = "none";
+
+    showStatus(
+        "AI is creating your story and comic images. Please wait...",
+        ""
+    );
+
+
+    try {
+
+        const formData = new FormData(form);
+
+
+        const response = await fetch("/generate", {
+
+            method: "POST",
+
+            body: formData
+
+        });
+
+
+        const data = await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.detail ||
+                "Comic generation failed."
+            );
+
+        }
+
+
+        if (!data.success) {
+
+            throw new Error(
+                "Comic generation was not successful."
+            );
+
+        }
+
+
+        const comic = data.comic;
+
+
+        showStatus(
+            `Comic created successfully! ${data.comic.image_count} images generated.`,
+            "success"
+        );
+
+
+        renderComic(comic);
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        showStatus(
+            "Error: " + error.message,
+            "error"
+        );
+
+    } finally {
+
+        button.disabled = false;
+
+        button.textContent = "✨ Generate Comic";
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}
+Export Complete - ComicCraft AI
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+```
+<section class="success-page">
+
+    <div class="success-card">
+
+        <!-- =================================================
+             SUCCESS ICON
+             ================================================= -->
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+
+        <!-- =================================================
+             TITLE
+             ================================================= -->
+
+        <h1>
+            PDF Ready!
+        </h1>
+
+
+        <!-- =================================================
+             MESSAGE
+             ================================================= -->
+
+        <p>
+
+            Your comic
+            <strong>
+                "{{ comic.title or 'My AI Comic' }}"
+            </strong>
+            has been successfully converted into a PDF.
+
+        </p>
+
+
+        <!-- =================================================
+             BUTTONS
+             ================================================= -->
+
+        <div
+            class="button-row"
+            style="justify-content: center;"
+        >
+
+            {% if pdf_url %}
+
+                <a
+                    href="{{ pdf_url }}"
+                    class="btn btn-primary"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    📄 Open PDF
+                </a>
+
+            {% endif %}
+
+
+            <a
+                href="/"
+                class="btn btn-secondary"
+            >
+                ✨ Create New Comic
+            </a>
+
+
+            <a
+                href="/"
+                class="btn btn-light"
+            >
+                ← Back to Home
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+```
+
+</div>
+
+{% endblock %}
